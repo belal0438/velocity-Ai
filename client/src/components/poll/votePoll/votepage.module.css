@@ -1,0 +1,14 @@
+.optionlist {
+  display: grid;
+  gap: 5px;
+}
+
+.options {
+  display: flex;
+  margin: 0 3px;
+  justify-content: space-between;
+}
+
+.conatiner2 {
+  display: flex;
+}

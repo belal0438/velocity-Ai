@@ -1,0 +1,9 @@
+.conatiner {
+  padding: 20px;
+  margin: 2rem auto;
+  max-width: 70%;
+  background-color: #f8f8f8;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  text-align: center;
+}

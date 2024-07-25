@@ -1,0 +1,14 @@
+.btn {
+  margin-top: 1.5rem;
+  width: 100%;
+}
+
+.inputprofilePic {
+  font-size: larger;
+  padding: 5px;
+  margin: 2px;
+  width: 100%;
+  border: 0.2px solid rgb(42, 41, 41);
+  border-radius: 0.5px;
+  background-color: #ffffff;
+}
