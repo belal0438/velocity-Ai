@@ -2,8 +2,8 @@ import React, { useState, useContext } from "react";
 import Input from "../../UI/input";
 import Container from "../../UI/container";
 import Classes from "../../user/users.module.css";
-// import axios from "axios";
-// import AuthContext from "../../store/context-api";
+import axios from "axios";
+import AuthContext from "../../../store/context-api";
 
 const CreatePoll = () => {
   const [question, setQuestion] = useState("");
@@ -12,7 +12,7 @@ const CreatePoll = () => {
   const [option3, setOption3] = useState("");
   const [option4, setOption4] = useState("");
 
-  // const AuthCtx = useContext(AuthContext);
+  const AuthCtx = useContext(AuthContext);
 
   const handleQuestion = (e) => {
     setQuestion(e.target.value);
@@ -34,7 +34,17 @@ const CreatePoll = () => {
     setOption4(e.target.value);
   };
 
-  const handleUrlAxios = async (obj) => {};
+  const handleUrlAxios = async (obj) => {
+    const token = AuthCtx.token;
+    const response = await axios.post(
+      "http://localhost:4000/api/v1/polls/create",
+      obj,
+      { headers: { Authorization: token } }
+    );
+    // console.log("reponse>>", response.data.data.question);
+    // console.log("reponse>>", response.data.data.options);
+    alert(response.data.message);
+  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -52,7 +62,7 @@ const CreatePoll = () => {
         options: [option1, option2, option3, option4],
       };
       console.log("RegistredValue", obj);
-      //   handleUrlAxios(obj);
+      handleUrlAxios(obj);
     }
   };
 

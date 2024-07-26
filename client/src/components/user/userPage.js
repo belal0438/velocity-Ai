@@ -42,7 +42,7 @@ const UserPage = () => {
         obj
       );
       // console.log("userLogindData>>", userLogin.data.message);
-      console.log("userLogindData>>", userLogin.data.data.accessToken);
+      // console.log("userLogindData>>", userLogin.data.data.accessToken);
       AuthCtx.login(userLogin.data.data.accessToken);
       alert(userLogin.data.message);
       return;

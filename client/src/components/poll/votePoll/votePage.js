@@ -1,35 +1,52 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import Container from "../../UI/container";
 import classes from "./votepage.module.css";
 import Input from "../../UI/input";
+import axios from "axios";
+import AuthContext from "../../../store/context-api";
 
-let ArryOfPoll = [
-  {
-    _id: 1,
-    question: "which laptop are you using",
-    options: ["Dell", "Apple", "Mc", "Linux"],
-  },
-  {
-    _id: 2,
-    question: "which Mobile are you using",
-    options: ["Sunsung", "Iphone", "Redmi", "Nokia"],
-  },
-  {
-    _id: 3,
-    question: "which Pen are you using",
-    options: ["Black", "Blue", "Red", "Yello"],
-  },
-  {
-    _id: 4,
-    question: "In which city are you",
-    options: ["Mumbai", "Utter Pradech", "Hariyana", "Mp"],
-  },
-];
+// let ArryOfPoll = [
+//   {
+//     _id: 1,
+//     question: "which laptop are you using",
+//     options: ["Dell", "Apple", "Mc", "Linux"],
+//   },
+//   {
+//     _id: 2,
+//     question: "which Mobile are you using",
+//     options: ["Sunsung", "Iphone", "Redmi", "Nokia"],
+//   },
+//   {
+//     _id: 3,
+//     question: "which Pen are you using",
+//     options: ["Black", "Blue", "Red", "Yello"],
+//   },
+//   {
+//     _id: 4,
+//     question: "In which city are you",
+//     options: ["Mumbai", "Utter Pradech", "Hariyana", "Mp"],
+//   },
+// ];
 
 const VotePage = () => {
   const [count, setCount] = useState({});
   const [comment, setComment] = useState("");
   //   console.log("count>>>>", count);
+  const [ArryOfPoll, setArrayOfPoll] = useState([]);
+  const AuthCtx = useContext(AuthContext);
+  const token = AuthCtx.token;
+  useEffect(() => {
+    const getuserprofile = async () => {
+      const response = await axios.get(
+        "http://localhost:4000/api/v1/polls/create",
+        { headers: { Authorization: token } }
+      );
+      setArrayOfPoll(response.data.data);
+      // console.log("reponsepoll>>>>>", response.data.data[0].question);
+      // console.log("reponsepoll>>>>>", response.data.data[0].options);
+    };
+    getuserprofile();
+  }, [token]);
 
   const onclickHandler = (pollId, option) => {
     setCount((prevCounts) => {
