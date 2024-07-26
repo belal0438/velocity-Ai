@@ -101,4 +101,15 @@ const loginUser = asyncHandler(async (req, res) => {
   );
 });
 
-export { registerUser, loginUser };
+const getUserProfile = asyncHandler(async (req, res) => {
+  const userId = req.user._id;
+  const user = await User.findById(userId)
+    .populate("createdPolls")
+    .populate("votedPolls");
+  if (!user) {
+    throw new ApiError(404, "User does not exist");
+  }
+  return res.status(201).json(new ApiResponse(200, user, "User registerd"));
+});
+
+export { registerUser, loginUser, getUserProfile };

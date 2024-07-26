@@ -43,4 +43,4 @@ const PollSchema = new Schema(
   }
 );
 
-export const User = mongoose.model("Poll", PollSchema);
+export const Poll = mongoose.model("Poll", PollSchema);

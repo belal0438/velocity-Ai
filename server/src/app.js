@@ -4,6 +4,11 @@ import connectDB from "./db/index.js";
 
 const app = express();
 
+import { User } from "./models/user.model.js";
+import { Poll } from "./models/poll.model.js";
+import { Vote } from "./models/vote.model.js";
+import { Comment } from "./models/comment.model.js";
+
 dotenv.config({
   path: "./.env",
 });
@@ -15,7 +20,10 @@ app.use(express.static("public"));
 app.use((req, res, next) => {
   res.setHeader("Access-Control-Allow-Origin", "*");
   res.setHeader("Access-Control-Allow-Methods", "POST, GET, OPTIONS");
-  res.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization");
+  res.setHeader(
+    "Access-Control-Allow-Headers",
+    "Content-Type, Authorization, header"
+  );
   if (req.method === "OPTIONS") {
     return res.sendStatus(200);
   }

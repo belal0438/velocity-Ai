@@ -3,7 +3,7 @@ import Input from "../UI/input";
 import Container from "../UI/container";
 import Classes from "./users.module.css";
 import axios from "axios";
-// import AuthContext from "../../store/context-api";
+import AuthContext from "../../store/context-api";
 
 const UserPage = () => {
   const [username, setUsername] = useState("");
@@ -12,7 +12,7 @@ const UserPage = () => {
   const [password, setPassword] = useState("");
 
   const [isLogin, setIsLogin] = useState(true);
-  // const AuthCtx = useContext(AuthContext);
+  const AuthCtx = useContext(AuthContext);
 
   const handleName = (e) => {
     setUsername(e.target.value);
@@ -43,7 +43,7 @@ const UserPage = () => {
       );
       // console.log("userLogindData>>", userLogin.data.message);
       console.log("userLogindData>>", userLogin.data.data.accessToken);
-      // AuthCtx.login(userLogin.data.data.accessToken);
+      AuthCtx.login(userLogin.data.data.accessToken);
       alert(userLogin.data.message);
       return;
     } else {
