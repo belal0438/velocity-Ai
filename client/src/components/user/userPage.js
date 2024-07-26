@@ -2,12 +2,12 @@ import React, { useState, useContext } from "react";
 import Input from "../UI/input";
 import Container from "../UI/container";
 import Classes from "./users.module.css";
-// import axios from "axios";
+import axios from "axios";
 // import AuthContext from "../../store/context-api";
 
 const UserPage = () => {
   const [username, setUsername] = useState("");
-  const [profilePic, setProfilePic] = useState("");
+  const [profilePic, setProfilePic] = useState(null);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
@@ -19,7 +19,7 @@ const UserPage = () => {
   };
 
   const handleProfilePic = (e) => {
-    setProfilePic(e.target.value);
+    setProfilePic(e.target.files[0]);
   };
 
   const handleEmail = (e) => {
@@ -36,25 +36,30 @@ const UserPage = () => {
   };
 
   const handleUrlAxios = async (obj) => {
-    //   if (isLogin) {
-    //     let userLogin = await axios.post(
-    //       "http://localhost:4000/api/v1/users/login",
-    //       obj
-    //     );
-    //     // console.log("userLogindData>>", userLogin);
-    //     console.log("userLogindData>>", userLogin.data.data.accessToken);
-    //     AuthCtx.login(userLogin.data.data.accessToken);
-    //     alert(userLogin.data.message);
-    //     return;
-    //   } else {
-    //     let userRegister = await axios.post(
-    //       "http://localhost:4000/api/v1/users/register",
-    //       obj
-    //     );
-    //     alert(userRegister.data.message);
-    //     // console.log("userRegisterdData>>", userRegister);
-    //     return;
-    //   }
+    if (isLogin) {
+      let userLogin = await axios.post(
+        "http://localhost:4000/api/v1/users/login",
+        obj
+      );
+      // console.log("userLogindData>>", userLogin.data.message);
+      console.log("userLogindData>>", userLogin.data.data.accessToken);
+      // AuthCtx.login(userLogin.data.data.accessToken);
+      alert(userLogin.data.message);
+      return;
+    } else {
+      const formData = new FormData();
+      formData.append("username", obj.username);
+      formData.append("profilePic", obj.profilePic);
+      formData.append("email", obj.email);
+      formData.append("password", obj.password);
+      let userRegister = await axios.post(
+        "http://localhost:4000/api/v1/users/register",
+        formData
+      );
+      alert(userRegister.data.message);
+      // console.log("userRegisterdData>>", userRegister.data.message);
+      return;
+    }
   };
 
   const handleSubmit = (e) => {
@@ -67,8 +72,8 @@ const UserPage = () => {
           email,
           password,
         };
-        console.log("loggedValue", obj);
-        //   handleUrlAxios(obj);
+        // console.log("loggedValue", obj);
+        handleUrlAxios(obj);
       }
     } else {
       if (
@@ -86,7 +91,7 @@ const UserPage = () => {
           password,
         };
         console.log("RegistredValue", obj);
-        //   handleUrlAxios(obj);
+        handleUrlAxios(obj);
       }
     }
   };
@@ -114,7 +119,6 @@ const UserPage = () => {
               input={{
                 className: Classes.inputprofilePic,
                 type: "file",
-                value: profilePic,
                 onChange: handleProfilePic,
               }}
             />
