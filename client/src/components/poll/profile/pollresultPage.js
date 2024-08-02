@@ -1,11 +1,10 @@
 import React, { useState, useEffect, useContext, useRef } from "react";
 import io from "socket.io-client";
 import Container from "../../UI/container";
-import classes from "./votepage.module.css";
+import classes from "./profile.module.css";
 import AuthContext from "../../../store/context-api";
-import axios from "axios";
 
-const VotePage = () => {
+const ResultPage = () => {
   const [count, setCount] = useState({});
   const [ArryOfPoll, setArrayOfPoll] = useState([]);
   const AuthCtx = useContext(AuthContext);
@@ -65,30 +64,6 @@ const VotePage = () => {
     }
   }, [token]);
 
-  const onclickHandler = async (pollId, option) => {
-    // Emit the vote event to the server using the persistent socket
-    socketRef.current.emit("vote", { pollId, option });
-
-    const response = await axios.post(
-      "http://localhost:4000/api/v1/votes",
-      { pollId, option, userId: AuthCtx.userId },
-      { headers: { Authorization: token } }
-    );
-    // Optimistically update the count
-    setCount((prevCounts) => {
-      const newCounts = { ...prevCounts };
-      if (!newCounts[pollId]) {
-        newCounts[pollId] = {};
-      }
-      if (!newCounts[pollId][option]) {
-        newCounts[pollId][option] = 0;
-      }
-      newCounts[pollId][option] += 1;
-      console.log("Optimistic update:", newCounts);
-      return newCounts;
-    });
-  };
-
   return (
     <div>
       {ArryOfPoll.map((item) => (
@@ -97,13 +72,10 @@ const VotePage = () => {
             <h2>{item.question}</h2>
             <div className={classes.optionlist}>
               {item.options.map((option, index) => (
-                <button
-                  key={index}
-                  className={classes.options}
-                  onClick={() => onclickHandler(item._id, option)}>
+                <div key={index} className={classes.optionItem}>
                   <span>{option}</span>
                   <span>{count[item._id]?.[option] || 0}</span>
-                </button>
+                </div>
               ))}
             </div>
           </div>
@@ -113,4 +85,4 @@ const VotePage = () => {
   );
 };
 
-export default VotePage;
+export default ResultPage;

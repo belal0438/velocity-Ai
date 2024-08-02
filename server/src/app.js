@@ -1,13 +1,23 @@
 import dotenv from "dotenv";
 import express from "express";
+import http from "http";
+import { Server } from "socket.io";
 import connectDB from "./db/index.js";
+import socketAuthMiddleware from "./middlewares/socketAuth.middleware.js";
+import { vote } from "./controllers/vote.controller.js";
 
 const app = express();
+const server = http.createServer(app);
+const io = new Server(server, {
+  cors: {
+    origin: "*",
+  },
+});
 
-import { User } from "./models/user.model.js";
-import { Poll } from "./models/poll.model.js";
-import { Vote } from "./models/vote.model.js";
-import { Comment } from "./models/comment.model.js";
+// import { User } from "./models/user.model.js";
+// import { Poll } from "./models/poll.model.js";
+// import { Vote } from "./models/vote.model.js";
+// import { Comment } from "./models/comment.model.js";
 
 dotenv.config({
   path: "./.env",
@@ -38,12 +48,36 @@ app.use("/api/v1/users", userRouter);
 app.use("/api/v1/polls", pollRouter);
 app.use("/api/v1", voteRouter);
 
+io.use(socketAuthMiddleware);
+// Handle socket connections
+io.on("connection", (socket) => {
+  console.log("New client connected");
+
+  socket.on("disconnect", () => {
+    console.log("Client disconnected");
+  });
+
+  // Listening for vote event from clients
+  socket.on("vote", async ({ pollId, option }) => {
+    try {
+      // Use the refactored vote function
+      const poll = await vote(pollId, option, socket.userId);
+      console.log("poll.votes>>>>", poll);
+      // Emit the updated vote counts to all clients
+      io.emit("voteUpdate", { pollId, voteCounts: poll });
+    } catch (error) {
+      console.error("Error voting:", error.message);
+      socket.emit("voteError", { message: error.message }); // Send error message to client
+    }
+  });
+});
+
 connectDB()
   .then(() => {
     app.on("error", (error) => {
       console.log("ERROR EVENT FOR APP !!", error);
     });
-    app.listen(process.env.PORT || 8000, () => {
+    server.listen(process.env.PORT || 8000, () => {
       console.log(`Server is running at port: ${process.env.PORT}`);
     });
   })

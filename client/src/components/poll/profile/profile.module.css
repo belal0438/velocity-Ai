@@ -8,3 +8,15 @@
   font-size: medium;
   font-style: italic;
 }
+
+.optionlist {
+  display: grid;
+  gap: 5px;
+}
+
+.optionItem {
+  display: flex;
+  margin: 3px 3px;
+  justify-content: space-between;
+  font-size: 1rem;
+}

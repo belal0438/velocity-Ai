@@ -3,6 +3,7 @@ import Container from "../../UI/container";
 import classes from "./profile.module.css";
 import axios from "axios";
 import AuthContext from "../../../store/context-api";
+import ResultPage from "./pollresultPage";
 
 const ProfilePage = () => {
   const AuthCtx = useContext(AuthContext);
@@ -31,6 +32,7 @@ const ProfilePage = () => {
         </div>
         <h4 className={classes.h4}>Name: {profileName}</h4>
       </Container>
+      <ResultPage />
     </>
   );
 };
