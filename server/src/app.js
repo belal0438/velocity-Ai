@@ -44,9 +44,11 @@ import userRouter from "./routes/user.route.js";
 import pollRouter from "./routes/poll.route.js";
 import voteRouter from "./routes/vote.route.js";
 // routes declaration
+
 app.use("/api/v1/users", userRouter);
 app.use("/api/v1/polls", pollRouter);
 app.use("/api/v1", voteRouter);
+app.use(express.static("build"));
 
 io.use(socketAuthMiddleware);
 // Handle socket connections
