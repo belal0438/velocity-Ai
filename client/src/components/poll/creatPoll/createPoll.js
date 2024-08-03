@@ -1,4 +1,5 @@
 import React, { useState, useContext } from "react";
+import { useNavigate } from "react-router-dom";
 import Input from "../../UI/input";
 import Container from "../../UI/container";
 import Classes from "../../user/users.module.css";
@@ -13,6 +14,7 @@ const CreatePoll = () => {
   const [option4, setOption4] = useState("");
 
   const AuthCtx = useContext(AuthContext);
+  const navigate = useNavigate();
 
   const handleQuestion = (e) => {
     setQuestion(e.target.value);
@@ -41,9 +43,14 @@ const CreatePoll = () => {
       obj,
       { headers: { Authorization: token } }
     );
-    // console.log("reponse>>", response.data.data.question);
+    // console.log("reponse>>", response.data.statusCode);
     // console.log("reponse>>", response.data.data.options);
-    alert(response.data.message);
+    if (response.data.statusCode === 200) {
+      alert(response.data.message);
+      navigate("/");
+    } else {
+      alert("Somthing went wrong");
+    }
   };
 
   const handleSubmit = (e) => {

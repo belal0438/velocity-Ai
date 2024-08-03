@@ -31,7 +31,7 @@ const ResultPage = () => {
           }
         });
         setCount(initialCounts);
-        console.log("Initial counts:", initialCounts);
+        // console.log("Initial counts:", initialCounts);
       } catch (error) {
         console.error("Error fetching polls:", error);
       }

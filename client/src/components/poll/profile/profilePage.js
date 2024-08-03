@@ -8,6 +8,7 @@ import ResultPage from "./pollresultPage";
 const ProfilePage = () => {
   const AuthCtx = useContext(AuthContext);
   const [profileName, setProfileName] = useState("");
+  const [profileEmail, setProfileEmail] = useState("");
   const [profilePic, setProfilePic] = useState(null);
 
   const token = AuthCtx.token;
@@ -17,8 +18,9 @@ const ProfilePage = () => {
         "http://localhost:4000/api/v1/users/user-profile",
         { headers: { Authorization: token } }
       );
-      // console.log("reponse>>>>>", response.data.data);
+      // console.log("reponseemail>>>>>", response.data.data);
       setProfileName(response.data.data.username);
+      setProfileEmail(response.data.data.email);
       setProfilePic(response.data.data.profilePicture);
     };
     getuserprofile();
@@ -31,6 +33,7 @@ const ProfilePage = () => {
           <img className={classes.Img} src={profilePic} alt="Error" />
         </div>
         <h4 className={classes.h4}>Name: {profileName}</h4>
+        <h4 className={classes.h4}>Email: {profileEmail}</h4>
       </Container>
       <ResultPage />
     </>

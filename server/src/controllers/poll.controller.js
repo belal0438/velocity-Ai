@@ -46,41 +46,6 @@ const getPolls = asyncHandler(async (req, res) => {
   return res
     .status(201)
     .json(new ApiResponse(200, pollData, "Vote count value"));
-
-  // const polls = await Poll.find().populate("createdBy", "username");
-
-  // const votedpoll = await Vote.aggregate([
-  //   {
-  //     $group: {
-  //       _id: "$poll",
-  //       arrayOfOption: {
-  //         $push: "$option",
-  //       },
-  //     },
-  //   },
-  // ]);
-
-  // // console.log("option>>", votedpoll);
-  // votedpoll.map((ele) => {
-  //   // console.log("ele", ele.arrayOfOption);
-  //   let object = {};
-  //   ele.arrayOfOption.map((item) => {
-  //     if (object[item] === undefined) {
-  //       object[item] = 1;
-  //     } else {
-  //       object[item] = object[item] + 1;
-  //     }
-  //   });
-  //   ele.arrayOfOption = object;
-  // });
-
-  // return res
-  //   .status(201)
-  //   .json(new ApiResponse(200, votedpoll, "Vote count value"));
-
-  // return res
-  //   .status(201)
-  //   .json(new ApiResponse(200, polls, "Get All polls Successfully"));
 });
 
 export { createPoll, getPolls };

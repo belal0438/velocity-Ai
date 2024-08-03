@@ -10,7 +10,6 @@ const UserPage = () => {
   const [profilePic, setProfilePic] = useState(null);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-
   const [isLogin, setIsLogin] = useState(true);
   const AuthCtx = useContext(AuthContext);
 
@@ -42,9 +41,13 @@ const UserPage = () => {
         obj
       );
       // console.log("userLogindData>>", userLogin.data.message);
-      // console.log("userLogindData>>", userLogin.data.data.accessToken);
-      AuthCtx.login(userLogin.data.data.accessToken);
-      alert(userLogin.data.message);
+      // console.log("userLogindData>>", userLogin.data.statusCode);
+      if (userLogin.data.statusCode === 200) {
+        AuthCtx.login(userLogin.data.data.accessToken);
+        alert(userLogin.data.message);
+      } else {
+        alert("something went wrong");
+      }
       return;
     } else {
       const formData = new FormData();
@@ -56,8 +59,13 @@ const UserPage = () => {
         "http://localhost:4000/api/v1/users/register",
         formData
       );
-      alert(userRegister.data.message);
-      // console.log("userRegisterdData>>", userRegister.data.message);
+
+      // console.log("userRegisterdData>>", userRegister.data.statusCode);
+      if (userRegister.data.statusCode === 200) {
+        alert(userRegister.data.message);
+      } else {
+        alert("Somthing went wrong");
+      }
       return;
     }
   };

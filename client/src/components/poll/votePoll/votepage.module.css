@@ -12,3 +12,7 @@
 .conatiner2 {
   display: flex;
 }
+
+.btn {
+  margin: 6px 0px;
+}

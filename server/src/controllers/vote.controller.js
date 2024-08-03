@@ -8,7 +8,7 @@ import { ApiResponse } from "../utils/ApiResponse.js";
 
 const vote = async (pollId, option, userId) => {
   // Create the vote
-  console.log("vote>>>", pollId, option, userId);
+  // console.log("vote>>>", pollId, option, userId);
   await Vote.create({
     poll: pollId,
     option,
@@ -49,6 +49,13 @@ const countVoteFrequencies = (votes) => {
 const voteHandler = asyncHandler(async (req, res) => {
   const { pollId, option } = req.body;
   const userId = req.user._id;
+
+  const existingVote = await Vote.findOne({ poll: pollId, user: userId });
+  if (existingVote) {
+    return res
+      .status(400)
+      .json({ message: "User has already voted for this poll." });
+  }
 
   const poll = await vote(pollId, option, userId);
 
