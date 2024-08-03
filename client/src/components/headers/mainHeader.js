@@ -1,7 +1,15 @@
-import React from "react";
+import React, { useContext } from "react";
 import { Outlet, Link } from "react-router-dom";
 import classes from "./mainHeader.module.css";
+import AuthContext from "../../store/context-api";
+
 const MainHeader = () => {
+  const authCtx = useContext(AuthContext);
+  const logoutHandler = () => {
+    authCtx.logout();
+    // option: redirect the user
+  };
+
   return (
     <>
       <header className={classes.header}>
@@ -31,8 +39,7 @@ const MainHeader = () => {
           </ul>
           <ul className={classes.navRight}>
             <li className={classes.logOut}>
-              {/* <Link to="/logout">LogOut</Link> */}
-              Logout
+              <button onClick={logoutHandler}>Logout</button>
             </li>
           </ul>
         </nav>
